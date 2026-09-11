@@ -8,7 +8,16 @@ public class Agent {
         this.x = x;
         this.y = y;
     }
+    Agent(agentType type, int x, int y, int health){
+        this.type = type;
+        this.x = x;
+        this.y = y;
+        this.health = health;
+    }
 
+    void proceed(Environment env){
+
+    }
 }
 
 enum agentType{

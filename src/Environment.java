@@ -38,4 +38,13 @@ public class Environment {
             System.out.println(line.toString().strip());
         }
     }
+    void proceed(){
+        for (Agent[] agents: world){
+            for (Agent agent: agents){
+                if (agent != null){
+                    agent.proceed(this);
+                }
+            }
+        }
+    }
 }
