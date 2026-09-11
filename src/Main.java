@@ -2,9 +2,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-    static int plants_amount = 5;
-    static int preys_amount = 0;
-    static int predators_amount = 0;
+    static int plants_amount = 2;
+    static int preys_amount = 1;
+    static int predators_amount = 1;
 
     public static void main(String[] args) {
         Agent agent = new Agent(agentType.PLANT, 5, 10);
@@ -12,12 +12,16 @@ public class Main {
         spawn(agentType.PLANT, plants_amount, env);
         spawn(agentType.PREY, preys_amount, env);
         spawn(agentType.PREDATOR, predators_amount, env);
-        for (int i = 1; i < 30; i++){
-            System.out.flush();
-            env.draw();
+        for (int i = 1; i > 0; i++){
             env.proceed();
+            env.draw();
             System.out.println("Шаг: " + i);
-            new Scanner(System.in).nextLine();
+            //new Scanner(System.in).nextLine();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -32,8 +36,8 @@ public class Main {
             Agent agnt = null;
             switch (type){
                 case PLANT -> agnt = new Plant(type, x, y);
-                case PREY -> agnt = new Prey(type, x, y);
-                case PREDATOR -> agnt = new Predator(type, x, y);
+                case PREY -> agnt = new Prey(type, x, y, 100, 150);
+                case PREDATOR -> agnt = new Predator(type, x, y, 100, 150);
             }
             env.add(agnt);
         }

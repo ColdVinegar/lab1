@@ -21,6 +21,11 @@ public class Environment {
     }
 
     void draw(){
+        for (int i = 0; i < this.length; i++){
+            System.out.print(i+TAB);
+        }
+        System.out.println();
+        int j = 0;
         for (Agent[] agents: this.world){
             StringBuilder line = new StringBuilder();
             for (Agent agent: agents){
@@ -35,6 +40,8 @@ public class Environment {
                 };
                 line.append(sym).append(TAB);
             }
+            line.append(j);
+            j++;
             System.out.println(line.toString().strip());
         }
     }
@@ -42,7 +49,8 @@ public class Environment {
         for (Agent[] agents: world){
             for (Agent agent: agents){
                 if (agent != null){
-                    agent.proceed(this);
+                    if (!agent.moved) agent.proceed(this);
+                    else agent.moved = false;
                 }
             }
         }
