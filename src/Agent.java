@@ -60,6 +60,44 @@ public class Agent {
         }
     }
 
+    void move(int[] target, List<int[]> available){
+        int deltaX = this.x-target[0], deltaY = this.y-target[1];
+        if (deltaX == 0 && deltaY == 0) return;
+
+        int[] newpoint = {this.x, this.y};
+        int X_avail = 0, Y_avail = 0;
+
+        for (int[] avail: available){
+            if (avail[0] != this.x) X_avail++;
+            if (avail[1] != this.y) Y_avail++;
+        }
+
+        if ((Math.abs(deltaX) > Math.abs(deltaY) && X_avail > 0) || (Math.abs(deltaX) < Math.abs(deltaY) && Y_avail == 0)){
+            int newX = this.x;
+            if (X_avail == 2) newX -= (Math.abs(deltaX)/deltaX);
+            newpoint[0] = newX;
+        }
+        else{
+            int newY = this.y;
+            if (Y_avail == 2) newY -=(Math.abs(deltaY)/deltaY);
+            newpoint[1] = newY;
+        }
+
+    }
+
+    void move(Environment env, int[] target){
+        if (env.world[target[1]][target[0]] != null) this.health += env.world[target[1]][target[0]].health;
+        env.world[target[1]][target[0]] = env.world[this.y][this.x];
+        env.world[this.y][this.x] = null;
+        if (this.x-target[0] < 0 || this.y-target[1] < 0) this.moved = true;
+        this.x = target[0];
+        this.y = target[1];
+
+        System.out.println("Health: "+this.health);
+        System.out.println("Move from: "+this.x+", "+this.y);
+        System.out.println("To: "+this.x+", "+this.y);
+    }
+
     boolean isAlive(Environment env){
         if (this.health == 0){
             env.world[this.y][this.x] = null;

@@ -13,28 +13,7 @@ public class Predator extends Agent{
     @Override
     void proceed(Environment env){
         if (!isAlive(env)) return;
-        int[] target = lookAround(env);
-        int deltaX = this.x-target[0], deltaY = this.y-target[1];
-        if (deltaX == 0 && deltaY == 0) return;
-        System.out.println("Health: "+this.health);
-        System.out.println("Target: "+target[0]+", "+target[1]+", dX "+deltaX+", xY "+deltaY);
-        System.out.println("Move from: "+this.x+", "+this.y);
-        if (Math.abs(deltaX) > Math.abs(deltaY)){
-            int newX = this.x - (Math.abs(deltaX)/deltaX);
-            if (env.world[this.y][newX] != null) this.health += env.world[this.y][newX].health;
-            env.world[this.y][newX] = env.world[this.y][this.x];
-            env.world[this.y][this.x] = null;
-            this.x = newX;
-        }
-        else{
-            int newY = this.y - (Math.abs(deltaY)/deltaY);
-            if (env.world[newY][this.x] != null) this.health += env.world[newY][this.x].health;
-            env.world[newY][this.x] = env.world[this.y][this.x];
-            env.world[this.y][this.x] = null;
-            this.y = newY;
-        }
-        System.out.println("To: "+this.x+", "+this.y);
-        if (deltaX < 0 || deltaY < 0) this.moved = true;
+        super.move(env, lookAround(env));
         super.proceed(env);
     }
 
@@ -66,14 +45,41 @@ public class Predator extends Agent{
                 }
             }
         }
-        if (dist < 5){
-            return nearestPrey;
-        }
+
+        int[] target;
+
         if (!available.isEmpty()){
-            Random random = new Random();
-            int rnd = random.nextInt(available.size());
-            return available.get(rnd);
+            if (dist < 5){
+                target = nearestPrey;
+            }
+            else {
+                Random random = new Random();
+                int rnd = random.nextInt(available.size());
+                target = available.get(rnd);
+            }
         }
-        return new int[]{this.x, this.y};
+        else return target = new int[]{this.x, this.y};
+
+        int deltaX = this.x-target[0], deltaY = this.y-target[1];
+
+        int[] newpoint = {this.x, this.y};
+        int X_avail = 0, Y_avail = 0;
+
+        for (int[] avail: available){
+            if (avail[0] != this.x) X_avail++;
+            if (avail[1] != this.y) Y_avail++;
+        }
+
+        if ((Math.abs(deltaX) > Math.abs(deltaY) && X_avail > 0) || (Math.abs(deltaX) < Math.abs(deltaY) && Y_avail == 0)){
+            int newX = this.x;
+            if (X_avail == 2) newX -= (Math.abs(deltaX)/deltaX);
+            newpoint[0] = newX;
+        }
+        else{
+            int newY = this.y;
+            if (Y_avail == 2) newY -=(Math.abs(deltaY)/deltaY);
+            newpoint[1] = newY;
+        }
+        return newpoint;
     }
 }
