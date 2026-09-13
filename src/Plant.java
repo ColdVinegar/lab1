@@ -3,6 +3,9 @@ import java.util.List;
 import java.util.Random;
 
 public class Plant extends Agent{
+
+
+
     Plant(agentType type, int x, int y) {
         super(type, x, y, 1, 10);
     }

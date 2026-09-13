@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Agent {
     agentType type;
-    int health = 10;
+    int health = 15;
     int splitLimit = 20;
     int x, y;
     boolean moved = false;
@@ -60,47 +60,74 @@ public class Agent {
         }
     }
 
-    void move(int[] target, List<int[]> available){
+    int[] decide(int[] target, List<int[]> available){
         int deltaX = this.x-target[0], deltaY = this.y-target[1];
-        if (deltaX == 0 && deltaY == 0) return;
 
         int[] newpoint = {this.x, this.y};
-        int X_avail = 0, Y_avail = 0;
+        List<int[]> X_avail = new ArrayList<>(List.of()), Y_avail = new ArrayList<>(List.of());
 
         for (int[] avail: available){
-            if (avail[0] != this.x) X_avail++;
-            if (avail[1] != this.y) Y_avail++;
+            if (avail[0] != this.x) X_avail.add(avail);
+            if (avail[1] != this.y) Y_avail.add(avail);
         }
 
-        if ((Math.abs(deltaX) > Math.abs(deltaY) && X_avail > 0) || (Math.abs(deltaX) < Math.abs(deltaY) && Y_avail == 0)){
+        /*
+        System.out.println();
+        System.out.println("dX: "+deltaX+", dY: "+deltaY+", x: "+this.x+", y: "+this.y);
+        if (!X_avail.isEmpty()) System.out.println("X_avail: ["+X_avail.getFirst()[0]+","+X_avail.getFirst()[1]+"; "+X_avail.getLast()[0]+","+X_avail.getLast()[1]+"]");
+        else System.out.println("No X avail");
+        if (!Y_avail.isEmpty()) System.out.println("Y_avail: ["+Y_avail.getFirst()[0]+","+Y_avail.getFirst()[1]+"; "+Y_avail.getLast()[0]+","+Y_avail.getLast()[1]+"]");
+        else System.out.println("No Y avail");
+        */
+
+        if ((Math.abs(deltaX) > Math.abs(deltaY) && !X_avail.isEmpty()) || (Math.abs(deltaX) < Math.abs(deltaY) && Y_avail.isEmpty())
+                || ((Math.abs(deltaX) == Math.abs(deltaY) && !Y_avail.isEmpty()
+                && (Math.abs(deltaY)/deltaY) != (Math.abs((this.y-Y_avail.getFirst()[1]))/(this.y-Y_avail.getFirst()[1]))
+                && (Math.abs(deltaY)/deltaY) != (Math.abs((this.y-Y_avail.getLast()[1]))/(this.y-Y_avail.getLast()[1]))))){
             int newX = this.x;
-            if (X_avail == 2) newX -= (Math.abs(deltaX)/deltaX);
+            if (deltaX == 0){
+                Random random = new Random();
+                int rnd = random.nextInt(X_avail.size());
+                newX = X_avail.get(rnd)[0];
+            }
+            else if (X_avail.size() == 2 || (!X_avail.isEmpty() && (Math.abs(deltaX)/deltaX) == (Math.abs((this.x-X_avail.getFirst()[0]))/(this.x-X_avail.getFirst()[0])))) newX -= (Math.abs(deltaX)/deltaX);
             newpoint[0] = newX;
         }
         else{
             int newY = this.y;
-            if (Y_avail == 2) newY -=(Math.abs(deltaY)/deltaY);
+            if (deltaY == 0){
+                Random random = new Random();
+                int rnd = random.nextInt(Y_avail.size());
+                newY = Y_avail.get(rnd)[1];
+            }
+            else if (Y_avail.size() == 2 || (!Y_avail.isEmpty() && (Math.abs(deltaY)/deltaY) == (Math.abs((this.y-Y_avail.getFirst()[1]))/(this.y-Y_avail.getFirst()[1])))) newY -= (Math.abs(deltaY)/deltaY);
             newpoint[1] = newY;
         }
-
+        return newpoint;
     }
 
     void move(Environment env, int[] target){
-        if (env.world[target[1]][target[0]] != null) this.health += env.world[target[1]][target[0]].health;
-        env.world[target[1]][target[0]] = env.world[this.y][this.x];
-        env.world[this.y][this.x] = null;
+        if (this.x == target[0] && this.y == target[1]) return;
+
+        //System.out.println("Health: "+this.health);
+        //System.out.println("Move from: "+this.x+", "+this.y);
+
+        if (env.world[target[1]][target[0]] != null) {
+            this.health += env.world[target[1]][target[0]].health;
+            env.remove(target[0], target[1]);
+        }
         if (this.x-target[0] < 0 || this.y-target[1] < 0) this.moved = true;
+        env.move(new int[]{this.x, this.y}, target);
+
         this.x = target[0];
         this.y = target[1];
 
-        System.out.println("Health: "+this.health);
-        System.out.println("Move from: "+this.x+", "+this.y);
-        System.out.println("To: "+this.x+", "+this.y);
+        //System.out.println("To: "+this.x+", "+this.y);
     }
 
     boolean isAlive(Environment env){
         if (this.health == 0){
-            env.world[this.y][this.x] = null;
+            env.remove(this.x, this.y);
             return false;
         }
         return true;

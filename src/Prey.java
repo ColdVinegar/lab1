@@ -13,7 +13,7 @@ public class Prey extends Agent{
     @Override
     void proceed(Environment env){
         if (!isAlive(env)) return;
-        super.move(env, lookAround(env));
+        move(env, lookAround(env));
         super.proceed(env);
     }
 
@@ -34,32 +34,72 @@ public class Prey extends Agent{
                     }
                     if (env.world[Y][X] == null) continue;
                     if (env.world[Y][X].type == agentType.PLANT) {
-                        System.out.println("Found PLANT! We at pos: "+this.x+", "+this.y);
+                        //System.out.println("Found PLANT! We at pos: "+this.x+", "+this.y);
                         double newdist = Math.sqrt(Math.pow((this.y-Y), 2)+Math.pow((this.x-X), 2));
-                        System.out.println("He at pos: "+X+", "+Y+" ("+newdist+")");
+                        //System.out.println("He at pos: "+X+", "+Y+" ("+newdist+")");
                         if (newdist < dist){
                             nearestPlant[0] = X;
                             nearestPlant[1] = Y;
                             dist = newdist;
                         }
+                        if (newdist == 1.0) available.add(new int[]{X, Y});
                     } else if (env.world[Y][X].type == agentType.PREDATOR) {
                         predators.add(new int[]{X, Y});
                     }
                 }
             }
         }
-        if (!predators.isEmpty()){
 
-            return
-        }
-        if (dist < 5){
-            return nearestPlant;
-        }
+        int[] target = {0, 0};
+
         if (!available.isEmpty()){
-            Random random = new Random();
-            int rnd = random.nextInt(available.size());
-            return available.get(rnd);
+            if (!predators.isEmpty()){
+                int[] v_res = {0, 0};  //ЗДЕСЬ НАЧИНАЕТСЯ ПОЛНАЯ ХРЕНЬ С ВЕКТОРАМИ, НО ОНА ОЧЕНЬ ИНТЕРЕСНАЯ, МНЕ НРАВИЦА
+
+                for (int[] p: predators){
+                    v_res[0] += this.x-p[0];
+                    v_res[1] += this.y-p[1];
+                }
+
+                v_res[0] += this.x;
+                v_res[1] += this.y;
+
+                if (predators.size() == 2 && predators.getFirst()[0]*v_res[1] == predators.getFirst()[1]*v_res[0]){
+                    int[] v_90 = {-1*v_res[1], v_res[0]};
+                    int[] v_270 = {v_res[1], -1*v_res[0]};
+
+                    int[] v_res_90 = v_90;
+                    int[] v_res_270 = v_270;
+
+                    for (int[] avail: available){
+                        v_res_90[0] += avail[0];
+                        v_res_270[0] += avail[0];
+                        v_res_90[1] += avail[1];
+                        v_res_270[1] += avail[1];
+                    }
+
+                    double dist90 = Math.sqrt(Math.pow((this.y-v_res_90[1]), 2)+Math.pow((this.x-v_res_90[0]), 2));
+                    double dist270 = Math.sqrt(Math.pow((this.y-v_res_270[1]), 2)+Math.pow((this.x-v_res_270[0]), 2));
+
+                    if (dist90 > dist270) target = v_90;
+                    else target = v_270;
+                }
+                else target = v_res;
+
+                //System.out.println("Found PREDATOR(s)! Res vector: "+target[0]+", "+target[1]);
+            }
+            else {
+                if (dist < 5) {
+                    target = nearestPlant;
+                } else {
+                    Random random = new Random();
+                    int rnd = random.nextInt(available.size());
+                    target = available.get(rnd);
+                }
+            }
         }
-        return new int[]{this.x, this.y};
+
+        if ((target[0] == 0 && target[1] == 0) || (target[0] == this.x && target[1] == this.y)) return target = new int[]{this.x, this.y};
+        else return decide(target, available);
     }
 }
