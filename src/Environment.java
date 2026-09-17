@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Environment {
     private static final String TAB = " ".repeat(2);
     int height = 50, length = 50;
@@ -43,11 +45,7 @@ public class Environment {
     }
 
     void clear(){
-        for (Agent[] agents: this.world){
-            for (Agent agent: agents){
-                agent = null;
-            }
-        }
+        for (Agent[] agents : this.world) Arrays.fill(agents, null);
         this.plants = 0;
         this.preys = 0;
         this.predators = 0;

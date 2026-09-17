@@ -1,39 +1,55 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-    static int plants_amount = 10;
-    static int preys_amount = 10;
-    static int predators_amount = 0;
+    static int plants_amount = 100;
+    static int preys_amount = 200;
+    static int predators_amount = 200;
 
     static int plants_health = 1;
     static int plants_limit = 10;
     static int agent_health = 15;
     static int agent_limit = 20;
 
-    static int experiment_avv_amount = 100;
+    static int experiment_avv_amount = 1;
 
     public static void main(String[] args) {
-        Environment env = new Environment(100, 100);
+        Environment env = new Environment(50, 50);
 
+        /* TESTING
         for (plants_health = 1; plants_health < 10; plants_health++){
             for (plants_limit = plants_health+1; plants_limit < 30; plants_limit++){
                 for (agent_health = 10; agent_health < 100; agent_health++){
                     for (agent_limit = agent_health+1; agent_limit < 200; agent_limit++){
-                        for (plants_amount = 10; plants_amount < 100; plants_amount++){
-                            for (preys_amount = 10; preys_amount < 200; preys_amount++){
-                                for (predators_amount = 10; predators_amount < 200; predators_amount++){
+                        for (plants_amount = 10; plants_amount < 100; plants_amount+=5){
+                            for (preys_amount = 10; preys_amount < 200; preys_amount+=5){
+                                for (predators_amount = 10; predators_amount < 200; predators_amount+=5){
                                     int steps = experiment(env);
                                     System.out.printf("%d %d %d %d %d %d %d %d\n", steps, plants_health, plants_limit, agent_health, agent_limit,
                                     plants_amount, preys_amount, predators_amount);
+
+                                    try (PrintWriter out = new PrintWriter(new FileWriter("log2.txt", true))) {
+                                        out.printf("%d %d %d %d %d %d %d %d%n",
+                                                steps, plants_health, plants_limit,
+                                                agent_health, agent_limit,
+                                                plants_amount, preys_amount, predators_amount);
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-        }
+        }*/
+
+        int steps = experiment(env);
     }
+
 
     static int experiment(Environment env){
         int summ = 0;
@@ -46,8 +62,8 @@ public class Main {
             while (env.plants > 1 && env.preys > 1 && env.predators > 1){
                 steps++;
                 env.proceed();
-                //env.draw();
-                //System.out.printf("Step %d\n\n", steps);
+                env.draw();
+                System.out.printf("Step %d\n\n", steps);
                 if (steps == 10_000) break;
             }
             summ += steps;
