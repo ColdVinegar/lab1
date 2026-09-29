@@ -36,9 +36,7 @@ public class Prey extends Agent{
                     }
                     if (env.world[Y][X] == null) continue;
                     if (env.world[Y][X].type == agentType.PLANT) {
-                        //System.out.println("Found PLANT! We at pos: "+this.x+", "+this.y);
                         double newdist = Math.sqrt(Math.pow((this.y-Y), 2)+Math.pow((this.x-X), 2));
-                        //System.out.println("He at pos: "+X+", "+Y+" ("+newdist+")");
                         if (newdist < dist){
                             nearestPlant[0] = X;
                             nearestPlant[1] = Y;
@@ -87,8 +85,6 @@ public class Prey extends Agent{
                     else target = v_270;
                 }
                 else target = v_res;
-
-                //System.out.println("Found PREDATOR(s)! Res vector: "+target[0]+", "+target[1]);
             }
             else {
                 if (dist < 5) {

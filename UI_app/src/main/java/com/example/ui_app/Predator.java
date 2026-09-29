@@ -35,9 +35,7 @@ public class Predator extends Agent{
                     }
                     if (env.world[Y][X] == null) continue;
                     if (env.world[Y][X].type == agentType.PREY) {
-                        //System.out.println("Found PREY! We at pos: "+this.x+", "+this.y);
                         double newdist = Math.sqrt(Math.pow((this.y-Y), 2)+Math.pow((this.x-X), 2));
-                        //System.out.println("He at pos: "+X+", "+Y+" ("+newdist+")");
                         if (newdist < dist){
                             nearestPrey[0] = X;
                             nearestPrey[1] = Y;

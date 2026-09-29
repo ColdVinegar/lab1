@@ -3,7 +3,6 @@ package com.example.ui_app;
 import java.util.Arrays;
 
 public class Environment {
-    private static final String TAB = " ".repeat(2);
     int height = 50, length = 50;
     Agent [][] world;
     int plants = 0, preys = 0, predators = 0;
@@ -53,35 +52,6 @@ public class Environment {
         this.predators = 0;
     }
 
-    void draw(){
-        for (int i = 0; i < this.length; i++){
-            System.out.printf("%-" +(TAB.length()+2)+ "d", i);
-        }
-        System.out.println();
-        int j = 0;
-        for (Agent[] agents: this.world){
-            StringBuilder line = new StringBuilder();
-            for (Agent agent: agents){
-                if (agent == null){
-                    line.append("▪ ").append(TAB);
-                    continue;
-                }
-                String sym = switch (agent.type){
-                    case PLANT -> "🌱";
-                    case PREY -> "🐨";
-                    case PREDATOR -> "🐯";
-                };
-                line.append(sym).append(TAB);
-            }
-            line.append(j);
-            j++;
-            System.out.println(line.toString().strip());
-        }
-        System.out.println("Plants 🌱: " + this.plants);
-        System.out.println("Preys 🐨: " + this.preys);
-        System.out.println("Predators 🐯: " + this.predators);
-        System.out.println();
-    }
     void proceed(){
         for (Agent[] agents: world){
             for (Agent agent: agents){

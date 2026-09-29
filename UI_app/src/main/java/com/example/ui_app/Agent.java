@@ -73,15 +73,6 @@ public class Agent {
             if (avail[1] != this.y) Y_avail.add(avail);
         }
 
-        /*
-        System.out.println();
-        System.out.println("dX: "+deltaX+", dY: "+deltaY+", x: "+this.x+", y: "+this.y);
-        if (!X_avail.isEmpty()) System.out.println("X_avail: ["+X_avail.getFirst()[0]+","+X_avail.getFirst()[1]+"; "+X_avail.getLast()[0]+","+X_avail.getLast()[1]+"]");
-        else System.out.println("No X avail");
-        if (!Y_avail.isEmpty()) System.out.println("Y_avail: ["+Y_avail.getFirst()[0]+","+Y_avail.getFirst()[1]+"; "+Y_avail.getLast()[0]+","+Y_avail.getLast()[1]+"]");
-        else System.out.println("No Y avail");
-        */
-
         if ((Math.abs(deltaX) > Math.abs(deltaY) && !X_avail.isEmpty()) || (Math.abs(deltaX) < Math.abs(deltaY) && Y_avail.isEmpty())
                 || ((Math.abs(deltaX) == Math.abs(deltaY) && !Y_avail.isEmpty()
                 && (Math.abs(deltaY)/deltaY) != (Math.abs((this.y-Y_avail.getFirst()[1]))/(this.y-Y_avail.getFirst()[1]))
@@ -111,9 +102,6 @@ public class Agent {
     void move(Environment env, int[] target){
         if (this.x == target[0] && this.y == target[1]) return;
 
-        //System.out.println("Health: "+this.health);
-        //System.out.println("Move from: "+this.x+", "+this.y);
-
         if (env.world[target[1]][target[0]] != null) {
             this.health += env.world[target[1]][target[0]].health;
             env.remove(target[0], target[1]);
@@ -123,8 +111,6 @@ public class Agent {
 
         this.x = target[0];
         this.y = target[1];
-
-        //System.out.println("To: "+this.x+", "+this.y);
     }
 
     boolean isAlive(Environment env){
