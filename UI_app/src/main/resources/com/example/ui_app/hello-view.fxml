@@ -5,11 +5,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui_app.HelloController">
+<HBox prefHeight="751.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui_app.HelloController">
    <children>
-      <GridPane fx:id="env_GridPane" gridLinesVisible="true" HBox.hgrow="ALWAYS">
+       <ScrollPane hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED" HBox.hgrow="ALWAYS">
+         <content>
+            <GridPane fx:id="env_GridPane" gridLinesVisible="true">
       </GridPane>
-       <VBox alignment="BASELINE_CENTER" maxWidth="Infinity" prefHeight="600.0" prefWidth="274.0">
+         </content>
+      </ScrollPane>
+       <VBox alignment="BASELINE_CENTER" maxWidth="Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="274.0">
          <children>
             <HBox alignment="CENTER" prefHeight="30.0" prefWidth="198.0">
                <children>
@@ -109,7 +113,7 @@
                  <children>
                      <Button fx:id="apply_btn" mnemonicParsing="false" onAction="#onApplyClicked" text="Apply" />
                      <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
-                     <Button fx:id="cancel_btn" cancelButton="true" mnemonicParsing="false" onAction="#onCancelClicked" text="Cancel" />
+                     <Button fx:id="cancel_btn" cancelButton="true" mnemonicParsing="false" onAction="#onCancelClicked" text="Reset" />
                  </children></HBox><HBox alignment="CENTER" prefHeight="35.0" prefWidth="198.0">
              <children>
                  <Button fx:id="play_btn" mnemonicParsing="false" onAction="#onPlayClicked" text="▶">
@@ -122,8 +126,23 @@
                         <Font size="17.0" />
                      </font></Button>
              </children></HBox>
-             <Label fx:id="steps_tw" text="steps" />
-             <Label fx:id="counts_tw" text="counts" />
+             <Label fx:id="steps_tw" text="Steps" />
+             <Label fx:id="plants_pb_tw" text="Plants" />
+            <ProgressBar fx:id="plants_pb" prefWidth="264.0" progress="0.0">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </ProgressBar>
+            <Label fx:id="preys_pb_tw" text="Preys" />
+            <ProgressBar fx:id="preys_pb" prefWidth="264.0" progress="0.0">
+               <padding>
+                  <Insets top="5.0" />
+               </padding></ProgressBar>
+            <Label fx:id="predators_pb_tw" text="Predators" />
+            <ProgressBar fx:id="predators_pb" prefWidth="264.0" progress="0.0">
+               <padding>
+                  <Insets top="5.0" />
+               </padding></ProgressBar>
          </children>
          <padding>
             <Insets right="10.0" />

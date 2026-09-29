@@ -26,7 +26,9 @@ public class HelloController {
     @FXML private Label agents_L_tw;
     @FXML private Label speed_tw;
     @FXML private Label steps_tw;
-    @FXML private Label counts_tw;
+    @FXML private Label plants_pb_tw;
+    @FXML private Label preys_pb_tw;
+    @FXML private Label predators_pb_tw;
 
     @FXML private Spinner<Integer> height_spinner;
     @FXML private Spinner<Integer> width_spinner;
@@ -39,6 +41,10 @@ public class HelloController {
     @FXML private Slider agents_S_slider;
     @FXML private Slider agents_L_slider;
     @FXML private Slider speed_slider;
+
+    @FXML private ProgressBar plants_pb;
+    @FXML private ProgressBar preys_pb;
+    @FXML private ProgressBar predators_pb;
 
     @FXML private Button apply_btn;
     @FXML private Button play_btn;
@@ -252,8 +258,15 @@ public class HelloController {
     }
 
     private void updateStatus(){
-        steps_tw.setText("Steps: "+steps);
-        counts_tw.setText(String.format("Plants: %d, Preys: %d, Predators: %d", env.plants, env.preys, env.predators));
+        int population = env.plants+env.preys+env.predators;
+
+        steps_tw.setText(String.format("Steps: %d, Agents: %d", steps, population));
+        plants_pb_tw.setText(String.format("Plants: %d", env.plants));
+        plants_pb.setProgress((double) env.plants /population);
+        preys_pb_tw.setText(String.format("Preys: %d", env.preys));
+        preys_pb.setProgress((double) env.preys /population);
+        predators_pb_tw.setText(String.format("Predators: %d", env.predators));
+        predators_pb.setProgress((double) env.predators /population);
     }
 
     private void setupEnv(){
