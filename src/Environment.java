@@ -80,6 +80,7 @@ public class Environment {
         System.out.println("Predators 🐯: " + this.predators);
         System.out.println();
     }
+
     void proceed(){
         for (Agent[] agents: world){
             for (Agent agent: agents){

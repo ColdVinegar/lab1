@@ -6,150 +6,168 @@
 <?import javafx.scene.text.*?>
 
 <HBox prefHeight="751.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ui_app.HelloController">
-   <children>
-       <ScrollPane hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED" HBox.hgrow="ALWAYS">
-         <content>
-            <GridPane fx:id="env_GridPane" gridLinesVisible="true">
-      </GridPane>
-         </content>
-      </ScrollPane>
-       <VBox alignment="BASELINE_CENTER" maxWidth="Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="274.0">
-         <children>
-            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="198.0">
-               <children>
-                  <Label text="Height">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </Label>
-                  <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
-                  <Spinner fx:id="height_spinner" editable="true" prefHeight="26.0" prefWidth="60.0">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </Spinner>
-                  <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
-                  <Label text="Width">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </Label>
-                  <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
-                  <Spinner fx:id="width_spinner" editable="true" prefHeight="26.0" prefWidth="60.0" />
-               </children>
-            </HBox>
-            <Label fx:id="plants_C_tw" prefHeight="18.0" prefWidth="204.0" text="Plants" />
-            <Slider fx:id="plants_C_slider" blockIncrement="1.0" min="1.0" showTickLabels="true">
-               <VBox.margin>
-                  <Insets bottom="5.0" />
-               </VBox.margin></Slider>
-            <Separator prefWidth="200.0">
-               <VBox.margin>
-                  <Insets bottom="5.0" />
-               </VBox.margin></Separator>
-             <Label fx:id="preys_C_tw" prefHeight="18.0" prefWidth="204.0" text="Preys" />
-             <Slider fx:id="preys_C_slider" blockIncrement="1.0" min="1.0" showTickLabels="true">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Slider>
-             <Separator prefWidth="200.0">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Separator>
-             <Label fx:id="predators_C_tw" prefHeight="18.0" prefWidth="204.0" text="Predators" />
-             <Slider fx:id="predators_C_slider" blockIncrement="1.0" min="1.0" showTickLabels="true">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Slider>
-             <Separator prefWidth="200.0">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Separator>
-             <Label fx:id="plants_S_tw" prefHeight="18.0" prefWidth="204.0" text="Plants start health" />
-             <Slider fx:id="plants_S_slider" blockIncrement="1.0" showTickLabels="true">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Slider>
-             <Separator prefWidth="200.0">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Separator>
-             <Label fx:id="plants_L_tw" prefHeight="18.0" prefWidth="204.0" text="Plants div limit" />
-             <Slider fx:id="plants_L_slider" blockIncrement="1.0" min="1.0" showTickLabels="true">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Slider>
-             <Separator prefWidth="200.0">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Separator>
-             <Label fx:id="agents_S_tw" prefHeight="18.0" prefWidth="204.0" text="Agents start health" />
-             <Slider fx:id="agents_S_slider" blockIncrement="1.0" showTickLabels="true">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Slider>
-             <Separator prefWidth="200.0">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Separator>
-             <Label fx:id="agents_L_tw" prefHeight="18.0" prefWidth="204.0" text="Agents div limit" />
-             <Slider fx:id="agents_L_slider" blockIncrement="1.0" min="1.0" showTickLabels="true">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Slider>
-             <Separator prefWidth="200.0">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Separator><Label fx:id="speed_tw" prefHeight="18.0" prefWidth="204.0" text="Speed" />
-             <Slider fx:id="speed_slider" max="500.0" min="50.0">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Slider>
-             <Separator prefWidth="200.0">
-                 <VBox.margin>
-                     <Insets bottom="5.0" />
-                 </VBox.margin></Separator>
-             <HBox alignment="CENTER" prefHeight="35.0" prefWidth="198.0">
-                 <children>
-                     <Button fx:id="apply_btn" mnemonicParsing="false" onAction="#onApplyClicked" text="Apply" />
-                     <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
-                     <Button fx:id="cancel_btn" cancelButton="true" mnemonicParsing="false" onAction="#onCancelClicked" text="Reset" />
-                 </children></HBox><HBox alignment="CENTER" prefHeight="35.0" prefWidth="198.0">
-             <children>
-                 <Button fx:id="play_btn" mnemonicParsing="false" onAction="#onPlayClicked" text="▶">
-                     <font>
-                        <Font size="17.0" />
-                     </font></Button>
-                 <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
-                 <Button fx:id="step_btn" mnemonicParsing="false" onAction="#onStepClicked" text="⏯">
-                     <font>
-                        <Font size="17.0" />
-                     </font></Button>
-             </children></HBox>
-             <Label fx:id="steps_tw" text="Steps" />
-             <Label fx:id="plants_pb_tw" text="Plants" />
-            <ProgressBar fx:id="plants_pb" prefWidth="264.0" progress="0.0">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </ProgressBar>
-            <Label fx:id="preys_pb_tw" text="Preys" />
-            <ProgressBar fx:id="preys_pb" prefWidth="264.0" progress="0.0">
-               <padding>
-                  <Insets top="5.0" />
-               </padding></ProgressBar>
-            <Label fx:id="predators_pb_tw" text="Predators" />
-            <ProgressBar fx:id="predators_pb" prefWidth="264.0" progress="0.0">
-               <padding>
-                  <Insets top="5.0" />
-               </padding></ProgressBar>
-         </children>
-         <padding>
-            <Insets right="10.0" />
-         </padding>
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
-      </VBox>
-   </children>
+    <children>
+        <ScrollPane hbarPolicy="AS_NEEDED" vbarPolicy="AS_NEEDED" HBox.hgrow="ALWAYS">
+            <content>
+                <GridPane fx:id="env_GridPane" gridLinesVisible="true">
+                </GridPane>
+            </content>
+        </ScrollPane>
+        <VBox alignment="BASELINE_CENTER" maxWidth="Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="274.0">
+            <children>
+                <HBox alignment="CENTER" prefHeight="30.0" prefWidth="198.0">
+                    <children>
+                        <Label text="Height">
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                        </Label>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
+                        <Spinner fx:id="height_spinner" editable="true" prefHeight="26.0" prefWidth="60.0">
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                        </Spinner>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
+                        <Label text="Width">
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                        </Label>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
+                        <Spinner fx:id="width_spinner" editable="true" prefHeight="26.0" prefWidth="60.0" />
+                    </children>
+                </HBox>
+                <Label fx:id="plants_C_tw" prefHeight="18.0" prefWidth="204.0" text="Plants" />
+                <Slider fx:id="plants_C_slider" blockIncrement="1.0" min="1.0" showTickLabels="true">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Slider>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Separator>
+                <Label fx:id="preys_C_tw" prefHeight="18.0" prefWidth="204.0" text="Preys" />
+                <Slider fx:id="preys_C_slider" blockIncrement="1.0" min="1.0" showTickLabels="true">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Slider>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Separator>
+                <Label fx:id="predators_C_tw" prefHeight="18.0" prefWidth="204.0" text="Predators" />
+                <Slider fx:id="predators_C_slider" blockIncrement="1.0" min="1.0" showTickLabels="true">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Slider>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Separator>
+                <Label fx:id="plants_S_tw" prefHeight="18.0" prefWidth="204.0" text="Plants start health" />
+                <Slider fx:id="plants_S_slider" blockIncrement="1.0" majorTickUnit="50.0" max="200.0" showTickLabels="true">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Slider>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Separator>
+                <Label fx:id="plants_L_tw" prefHeight="18.0" prefWidth="204.0" text="Plants div limit" />
+                <Slider fx:id="plants_L_slider" blockIncrement="1.0" majorTickUnit="50.0" max="200.0" min="1.0" showTickLabels="true">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Slider>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Separator>
+                <Label fx:id="preys_S_tw" prefHeight="18.0" prefWidth="204.0" text="Preys start health" />
+                <Slider fx:id="preys_S_slider" blockIncrement="1.0" majorTickUnit="50.0" max="200.0" showTickLabels="true">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Slider>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Separator>
+                <Label fx:id="preys_L_tw" prefHeight="18.0" prefWidth="204.0" text="Preys div limit" />
+                <Slider fx:id="preys_L_slider" blockIncrement="1.0" majorTickUnit="50.0" max="200.0" min="1.0" showTickLabels="true">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Slider>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Separator>
+                <Label fx:id="predators_S_tw" prefHeight="18.0" prefWidth="204.0" text="Predators start health" />
+                <Slider fx:id="predators_S_slider" blockIncrement="1.0" majorTickUnit="50.0" max="200.0" showTickLabels="true">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Slider>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Separator>
+                <Label fx:id="predators_L_tw" prefHeight="18.0" prefWidth="204.0" text="Predators div limit" />
+                <Slider fx:id="predators_L_slider" blockIncrement="1.0" majorTickUnit="50.0" max="200.0" min="1.0" showTickLabels="true">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Slider>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Separator>
+                <Label fx:id="speed_tw" prefHeight="18.0" prefWidth="204.0" text="Speed" />
+                <Slider fx:id="speed_slider" max="500.0" min="50.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Slider>
+                <Separator prefWidth="200.0">
+                    <VBox.margin>
+                        <Insets bottom="5.0" />
+                    </VBox.margin></Separator>
+                <HBox alignment="CENTER" prefHeight="35.0" prefWidth="198.0">
+                    <children>
+                        <Button fx:id="apply_btn" mnemonicParsing="false" onAction="#onApplyClicked" text="Apply" />
+                        <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
+                        <Button fx:id="cancel_btn" cancelButton="true" mnemonicParsing="false" onAction="#onCancelClicked" text="Reset" />
+                        <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
+                        <Button fx:id="play_btn" mnemonicParsing="false" onAction="#onPlayClicked" text="▶">
+                            <font>
+                                <Font size="14.0" />
+                            </font></Button>
+                        <Separator orientation="VERTICAL" prefHeight="200.0" visible="false" />
+                        <Button fx:id="step_btn" mnemonicParsing="false" onAction="#onStepClicked" text="⏯">
+                            <font>
+                                <Font size="14.0" />
+                            </font></Button>
+                    </children></HBox>
+                <Label fx:id="steps_tw" text="Steps" />
+                <Label fx:id="plants_pb_tw" text="Plants" />
+                <ProgressBar fx:id="plants_pb" prefWidth="264.0" progress="0.0">
+                    <padding>
+                        <Insets top="5.0" />
+                    </padding>
+                </ProgressBar>
+                <Label fx:id="preys_pb_tw" text="Preys" />
+                <ProgressBar fx:id="preys_pb" prefWidth="264.0" progress="0.0">
+                    <padding>
+                        <Insets top="5.0" />
+                    </padding></ProgressBar>
+                <Label fx:id="predators_pb_tw" text="Predators" />
+                <ProgressBar fx:id="predators_pb" prefWidth="264.0" progress="0.0">
+                    <padding>
+                        <Insets top="5.0" />
+                    </padding></ProgressBar>
+            </children>
+            <padding>
+                <Insets right="10.0" />
+            </padding>
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </VBox>
+    </children>
 </HBox>

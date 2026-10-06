@@ -22,8 +22,10 @@ public class HelloController {
     @FXML private Label predators_C_tw;
     @FXML private Label plants_S_tw;
     @FXML private Label plants_L_tw;
-    @FXML private Label agents_S_tw;
-    @FXML private Label agents_L_tw;
+    @FXML private Label preys_S_tw;
+    @FXML private Label preys_L_tw;
+    @FXML private Label predators_S_tw;
+    @FXML private Label predators_L_tw;
     @FXML private Label speed_tw;
     @FXML private Label steps_tw;
     @FXML private Label plants_pb_tw;
@@ -38,8 +40,10 @@ public class HelloController {
     @FXML private Slider predators_C_slider;
     @FXML private Slider plants_S_slider;
     @FXML private Slider plants_L_slider;
-    @FXML private Slider agents_S_slider;
-    @FXML private Slider agents_L_slider;
+    @FXML private Slider preys_S_slider;
+    @FXML private Slider preys_L_slider;
+    @FXML private Slider predators_S_slider;
+    @FXML private Slider predators_L_slider;
     @FXML private Slider speed_slider;
 
     @FXML private ProgressBar plants_pb;
@@ -104,12 +108,20 @@ public class HelloController {
             this.plants_L_tw.setText(String.format("Plants div limit: %d", newVal.intValue()));
             switchControls(false);
         });
-        agents_S_slider.valueProperty().addListener((obs, oldVal, newVal) -> {
-            this.agents_S_tw.setText(String.format("Agents start health: %d", newVal.intValue()));
+        preys_S_slider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            this.preys_S_tw.setText(String.format("Preys start health: %d", newVal.intValue()));
             switchControls(false);
         });
-        agents_L_slider.valueProperty().addListener((obs, oldVal, newVal) -> {
-            this.agents_L_tw.setText(String.format("Agents div limit: %d", newVal.intValue()));
+        preys_L_slider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            this.preys_L_tw.setText(String.format("Preys div limit: %d", newVal.intValue()));
+            switchControls(false);
+        });
+        predators_S_slider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            this.predators_S_tw.setText(String.format("Predators start health: %d", newVal.intValue()));
+            switchControls(false);
+        });
+        predators_L_slider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            this.predators_L_tw.setText(String.format("Predators div limit: %d", newVal.intValue()));
             switchControls(false);
         });
         speed_slider.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -164,8 +176,10 @@ public class HelloController {
         if(!onlyCounts){
             plants_S_slider.setValue(1);
             plants_L_slider.setValue(10);
-            agents_S_slider.setValue(15);
-            agents_L_slider.setValue(20);
+            preys_S_slider.setValue(15);
+            preys_L_slider.setValue(20);
+            predators_S_slider.setValue(15);
+            predators_L_slider.setValue(20);
             speed_slider.setValue(100);
         }
         updateSliders();
@@ -287,8 +301,8 @@ public class HelloController {
             Agent agnt = null;
             switch (type){
                 case PLANT -> agnt = new Plant(type, x, y, (int)this.plants_S_slider.getValue(), (int)this.plants_L_slider.getValue());
-                case PREY -> agnt = new Prey(type, x, y, (int)this.agents_S_slider.getValue(), (int)this.agents_L_slider.getValue());
-                case PREDATOR -> agnt = new Predator(type, x, y, (int)this.agents_S_slider.getValue(), (int)this.agents_L_slider.getValue());
+                case PREY -> agnt = new Prey(type, x, y, (int)this.preys_S_slider.getValue(), (int)this.preys_L_slider.getValue());
+                case PREDATOR -> agnt = new Predator(type, x, y, (int)this.predators_S_slider.getValue(), (int)this.predators_L_slider.getValue());
             }
             env.add(agnt);
         }
