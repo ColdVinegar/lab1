@@ -11,8 +11,10 @@ public class Main {
 
     static int plants_health = 1;
     static int plants_limit = 10;
-    static int agent_health = 15;
-    static int agent_limit = 20;
+    static int preys_health = 15;
+    static int preys_limit = 20;
+    static int predators_health = 15;
+    static int predators_limit = 20;
 
     static int experiment_avv_amount = 1;
 
@@ -22,19 +24,21 @@ public class Main {
         /* TESTING
         for (plants_health = 1; plants_health < 10; plants_health++){
             for (plants_limit = plants_health+1; plants_limit < 30; plants_limit++){
-                for (agent_health = 10; agent_health < 100; agent_health++){
-                    for (agent_limit = agent_health+1; agent_limit < 200; agent_limit++){
+                for (preys_health = 10; preys_health < 100; preys_health++){
+                    for (preys_limit = preys_health+1; preys_limit < 200; preys_limit++){
                         for (plants_amount = 10; plants_amount < 100; plants_amount+=5){
                             for (preys_amount = 10; preys_amount < 200; preys_amount+=5){
                                 for (predators_amount = 10; predators_amount < 200; predators_amount+=5){
                                     int steps = experiment(env);
-                                    System.out.printf("%d %d %d %d %d %d %d %d\n", steps, plants_health, plants_limit, agent_health, agent_limit,
+                                    System.out.printf("%d %d %d %d %d %d %d %d %d %d\n", steps, plants_health, plants_limit, preys_health,
+                                    preys_limit, predators_health, predators_limit,
                                     plants_amount, preys_amount, predators_amount);
 
                                     try (PrintWriter out = new PrintWriter(new FileWriter("log2.txt", true))) {
                                         out.printf("%d %d %d %d %d %d %d %d%n",
                                                 steps, plants_health, plants_limit,
-                                                agent_health, agent_limit,
+                                                preys_health, preys_limit,
+                                                predators_health, predators_limit,
                                                 plants_amount, preys_amount, predators_amount);
                                     } catch (IOException e) {
                                         throw new RuntimeException(e);
@@ -82,8 +86,8 @@ public class Main {
             Agent agnt = null;
             switch (type){
                 case PLANT -> agnt = new Plant(type, x, y, plants_health, plants_limit);
-                case PREY -> agnt = new Prey(type, x, y, agent_health, agent_limit);
-                case PREDATOR -> agnt = new Predator(type, x, y, agent_health, agent_limit);
+                case PREY -> agnt = new Prey(type, x, y, preys_health, preys_limit);
+                case PREDATOR -> agnt = new Predator(type, x, y, predators_health, predators_limit);
             }
             env.add(agnt);
         }
