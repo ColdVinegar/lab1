@@ -4,18 +4,19 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.util.Random;
 
 public class HelloController {
 
-    @FXML private GridPane env_GridPane;
+    @FXML private Canvas envCanvas;
+    @FXML private ScrollPane envScrollPane;
 
     @FXML private Label plants_C_tw;
     @FXML private Label preys_C_tw;
@@ -54,7 +55,8 @@ public class HelloController {
     @FXML private Button play_btn;
     @FXML private Button step_btn;
 
-    private StackPane[][] cells;
+    private GraphicsContext graphics;
+    private double cellSize;
     private Environment env;
 
     private Image imgPlant;
@@ -72,10 +74,19 @@ public class HelloController {
         imgPlant = loadImage("/com/example/ui_app/plant.png");
         imgPrey = loadImage("/com/example/ui_app/prey.png");
         imgPredator = loadImage("/com/example/ui_app/predator.png");
+        graphics = envCanvas.getGraphicsContext2D();
+
+        envScrollPane.viewportBoundsProperty().addListener((obs, oldBounds, newBounds) -> {
+            resizeCanvas();
+            render();
+        });
+        envCanvas.widthProperty().addListener((obs, oldValue, newValue) -> render());
+        envCanvas.heightProperty().addListener((obs, oldValue, newValue) -> render());
 
         this.apply_btn.requestFocus();
 
         resetSpinners();
+        resetSliders(false);
 
         height_spinner.valueProperty().addListener((obs, oldVal, newVal) -> {
             resetSliders(true);
@@ -130,8 +141,8 @@ public class HelloController {
 
         resetSliders(false);
         setupEnv();
-        buildGrid(env.height, env.length);
         env.clear();
+        resizeCanvas();
         render();
     }
 
@@ -170,28 +181,29 @@ public class HelloController {
 
     @FXML
     protected void resetSliders(boolean onlyCounts){
-        plants_C_slider.setValue(100);
-        preys_C_slider.setValue(200);
-        predators_C_slider.setValue(200);
+        plants_C_slider.setValue(3000);
+        preys_C_slider.setValue(1100);
+        predators_C_slider.setValue(100);
         if(!onlyCounts){
-            plants_S_slider.setValue(1);
-            plants_L_slider.setValue(10);
-            preys_S_slider.setValue(15);
-            preys_L_slider.setValue(20);
-            predators_S_slider.setValue(15);
-            predators_L_slider.setValue(20);
+            plants_S_slider.setValue(3);
+            plants_L_slider.setValue(14);
+            preys_S_slider.setValue(140);
+            preys_L_slider.setValue(170);
+            predators_S_slider.setValue(140);
+            predators_L_slider.setValue(170);
             speed_slider.setValue(100);
         }
+        speed_slider.setValue(100);
         updateSliders();
     }
 
     @FXML
     protected void resetSpinners(){
         height_spinner.setValueFactory(
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(50, 200, 50)
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(50, 200, 100)
         );
         width_spinner.setValueFactory(
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(50, 200, 50)
+                new SpinnerValueFactory.IntegerSpinnerValueFactory(50, 200, 100)
         );
     }
 
@@ -201,7 +213,7 @@ public class HelloController {
         resetSliders(false);
         env.clear();
         steps = 0;
-        buildGrid(env.height, env.length);
+        resizeCanvas();
         render();
         switchControls(false);
     }
@@ -211,7 +223,7 @@ public class HelloController {
         env.clear();
         steps = 0;
         setupEnv();
-        buildGrid(env.height, env.length);
+        resizeCanvas();
         render();
         switchControls(true);
     }
@@ -308,75 +320,76 @@ public class HelloController {
         }
     }
 
-    private void buildGrid(int rows, int cols) {
-        env_GridPane.getChildren().clear();
-        env_GridPane.getColumnConstraints().clear();
-        env_GridPane.getRowConstraints().clear();
-        env_GridPane.setGridLinesVisible(false);
+    private void resizeCanvas() {
+        if (env == null || envCanvas == null) return;
 
+        double viewWidth = envScrollPane.getViewportBounds().getWidth();
+        double viewHeight = envScrollPane.getViewportBounds().getHeight();
 
-        for (int c = 0; c < cols; c++) {
-            ColumnConstraints cc = new ColumnConstraints();
-            cc.setPercentWidth(100.0 / cols);
-            cc.setHgrow(Priority.ALWAYS);
-            env_GridPane.getColumnConstraints().add(cc);
-        }
-        for (int r = 0; r < rows; r++) {
-            RowConstraints rc = new RowConstraints();
-            rc.setPercentHeight(100.0 / rows);
-            rc.setVgrow(Priority.ALWAYS);
-            env_GridPane.getRowConstraints().add(rc);
+        if (viewWidth <= 0 || viewHeight <= 0) {
+            viewWidth = 600;
+            viewHeight = 600;
         }
 
-        cells = new StackPane[rows][cols];
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
-                StackPane cell = new StackPane();
-                cell.getStyleClass().addAll("env-cell", "cell-empty");
+        double side = Math.max(1, Math.min(viewWidth, viewHeight));
+        cellSize = Math.max(1, side / Math.max(env.height, env.length));
 
-                ImageView iv = new ImageView();
-                iv.setPreserveRatio(true);
-                iv.setSmooth(true);
-                iv.setFitWidth(11);
-                iv.setFitHeight(11);
-
-                cell.getChildren().add(iv);
-                cells[r][c] = cell;
-                env_GridPane.add(cell, c, r);
-            }
+        double minSide = 750;
+        if (env.height <= 100 && env.length <= 100) {
+            side = Math.max(side, minSide);
+            cellSize = side / Math.max(env.height, env.length);
         }
+
+        envCanvas.setWidth(env.length * cellSize);
+        envCanvas.setHeight(env.height * cellSize);
     }
 
     public void render() {
+        if (env == null || graphics == null) return;
+        if (envCanvas.getWidth() <= 0 || envCanvas.getHeight() <= 0) return;
+
+        double w = envCanvas.getWidth();
+        double h = envCanvas.getHeight();
+        cellSize = Math.min(w / env.length, h / env.height);
+
+        graphics.clearRect(0, 0, w, h);
+        graphics.setFill(Color.WHITE);
+        graphics.fillRect(0, 0, w, h);
+
+        graphics.setStroke(Color.web("#DBDBDB"));
+        graphics.setLineWidth(0.4);
+        for (int x = 0; x <= env.length; x++) {
+            double px = x * cellSize;
+            graphics.strokeLine(px, 0, px, env.height * cellSize);
+        }
+        for (int y = 0; y <= env.height; y++) {
+            double py = y * cellSize;
+            graphics.strokeLine(0, py, env.length * cellSize, py);
+        }
+
+        double imagePadding = Math.max(0.5, cellSize * 0.08);
+        double imageSize = Math.max(1, cellSize - 2 * imagePadding);
+
         for (int r = 0; r < env.height; r++) {
             for (int c = 0; c < env.length; c++) {
                 Agent a = env.world[r][c];
-                StackPane cell = cells[r][c];
-                ImageView iv = (ImageView) cell.getChildren().get(0);
+                if (a == null) continue;
 
-                cells[r][c].setStyle(
-                        "-fx-background-color: #ffffff;" +
-                                "-fx-border-color: #DBDBDB;" +
-                                "-fx-border-width: 0.4;" +
-                                "-fx-alignment: center;"
-                );
-
-                if (a == null) {
-                    iv.setImage(null);
-                    cell.getStyleClass().setAll("env-cell", "cell-empty");
-                    continue;
-                }
-
-                iv.setImage(switch (a.type) {
-                    case PLANT    -> imgPlant;
-                    case PREY     -> imgPrey;
+                Image image = switch (a.type) {
+                    case PLANT -> imgPlant;
+                    case PREY -> imgPrey;
                     case PREDATOR -> imgPredator;
-                });
-                cell.getStyleClass().setAll("env-cell", switch (a.type) {
-                    case PLANT    -> "cell-plant";
-                    case PREY     -> "cell-prey";
-                    case PREDATOR -> "cell-predator";
-                });
+                };
+
+                if (image != null) {
+                    graphics.drawImage(
+                            image,
+                            c * cellSize + imagePadding,
+                            r * cellSize + imagePadding,
+                            imageSize,
+                            imageSize
+                    );
+                }
             }
         }
     }
